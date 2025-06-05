@@ -72,13 +72,6 @@ const NavBar = () => {
 
           {/* Right side: Desktop Book Button & Mobile Icons/Button */}
           <div className="flex items-center">
-            {/* Desktop Book Button */}
-            <div className="hidden md:block">
-              <button className="btn btn-warning bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-150">
-                Book
-              </button>
-            </div>
-
             {/* Mobile Menu Button and Icons */}
             <div className="md:hidden flex items-center space-x-2">
               <button
@@ -103,6 +96,14 @@ const NavBar = () => {
               >
                 <span className="sr-only">Open main menu</span>
                 <FontAwesomeIcon icon={faBars} />
+              </button>
+            </div>
+
+            {/* Desktop Book Button */}
+            {/* <div className="hidden md:block"> */}
+            <div className="">
+              <button className="btn btn-warning bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-150">
+                Book
               </button>
             </div>
           </div>
