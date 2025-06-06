@@ -8,6 +8,7 @@ import NavLink from "./NavLink";
 
 const NavBar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const toggleButtonRef = useRef<HTMLButtonElement>(null);
   const justToggledRef = useRef(false);
@@ -63,9 +64,43 @@ const NavBar = () => {
                 href={link.href}
                 isActive={link.isActive}
               >
-                <p className="text-base sm:text-sm md:text-base lg:text-lg">
-                  {link.text}
-                </p>
+                {link.text === "Services" ? (
+                  <details className="dropdown">
+                    <summary className="text-base sm:text-sm md:text-base lg:text-lg">
+                      {link.text}
+                    </summary>
+                    <ul className="menu dropdown-content bg-white rounded-box z-1 p-2 shadow-sm w-fit">
+                      <li
+                        style={{
+                          "--menu-active-bg": "oklch(62.3% 0.214 259.815)", // override css
+                        }}
+                      >
+                        <a
+                          href={"#"}
+                          className={`px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-500 hover:underline hover:underline-offset-4 hover:decoration-2 transition-colors duration-150`}
+                        >
+                          Item 1
+                        </a>
+                      </li>
+                      <li
+                        style={{
+                          "--menu-active-bg": "oklch(62.3% 0.214 259.815)",
+                        }}
+                      >
+                        <a
+                          href={"#"}
+                          className={`px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-500 hover:underline hover:underline-offset-4 hover:decoration-2 transition-colors duration-150`}
+                        >
+                          Item 2
+                        </a>
+                      </li>
+                    </ul>
+                  </details>
+                ) : (
+                  <p className="text-base sm:text-sm md:text-base lg:text-lg">
+                    {link.text}
+                  </p>
+                )}
               </NavLink>
             ))}
           </div>
@@ -105,20 +140,55 @@ const NavBar = () => {
         id="mobile-menu"
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setIsMobileMenuOpen(false)} // Close menu on link click
-              className={`block px-3 py-2 rounded-md text-base font-medium ${
-                link.isActive
-                  ? "bg-orange-100 text-orange-600"
-                  : "text-gray-700 hover:bg-gray-50 hover:text-orange-600"
-              }`}
-            >
-              {link.text}
-            </a>
-          ))}
+          {navLinks.map((link) => {
+            let servicesLinks = ["Service Link 1", "Service Link 2"];
+            if (link.text === "Services") {
+              return (
+                <div
+                  className={`collapse ${
+                    isAccordionOpen ? "collapse-open" : "collapse-close"
+                  } collapse-arrow text-gray-700 hover:bg-gray-50 hover:text-orange-600`}
+                  onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+                >
+                  <input type="radio" name="my-accordion-2" defaultChecked />
+                  <div className="collapse-title font-semibold">Services</div>
+                  <div className="collapse-content text-sm">
+                    <ul className="menu dropdown-content bg-gray-50 rounded-box z-1 p-2 shadow-sm w-100 gap-1">
+                      {servicesLinks.map((link) => (
+                        <li
+                          style={{ "--menu-active-bg": "#ea580c" }}
+                          className="bg-white rounded-xl shadow"
+                        >
+                          <a
+                            href={"#"}
+                            className={`px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-500 hover:underline hover:underline-offset-4 hover:decoration-2 transition-colors duration-150 `}
+                            onClick={() => setIsMobileMenuOpen(false)} // Close menu on link click
+                          >
+                            {link}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              );
+            } else {
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)} // Close menu on link click
+                  className={`block px-3 py-2 rounded-md text-base font-medium ${
+                    link.isActive
+                      ? "bg-orange-100 text-orange-600"
+                      : "text-gray-700 hover:bg-gray-50 hover:text-orange-600"
+                  }`}
+                >
+                  {link.text}
+                </a>
+              );
+            }
+          })}
           <div className="px-3 pt-2 pb-3">
             <button className="w-full btn btn-warning bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-150">
               Book
