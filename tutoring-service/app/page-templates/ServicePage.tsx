@@ -97,10 +97,10 @@ const ServicePage = ({
       {hasExtra ? <></> : <Link href={serviceInfo.buttonLink} className="btn btn-accent">{serviceInfo.buttonText}</Link>}
     </div>
     {hasExtra ?
-      <div className="row md:row-span-1 sm:mx-20 lg:mx-40 my-10 flex flex-col md:flex-row justify-evenly items-center">
+      <div className="row md:row-span-1 sm:px-20 lg:px-40 my-10 flex flex-col md:flex-row max-w-screen justify-center items-center flex-wrap">
         {extraComponents?.map(
-          ({type, card}) => {
-            return type === level ? card : <></>;
+          ({type, card}, index) => {
+            return type === level ? <div key={index}>{card}</div> : <></>;
           }
         )}
       </div> : <></>
