@@ -8,13 +8,13 @@ type PhotoHeaderProps = PropsWithChildren<{
 
 const PhotoHeader = ({ children, imgSrc, title, subtitle }: PhotoHeaderProps) => {
   return <div
-    className="hero w-screen h-80"
+    className="hero w-full h-80 md:h-100"
     style={{
       backgroundImage: `url(${imgSrc})`,
     }}
   >
-    <div className="flex flex-col items-center justify-evenly h-full">
-      <div className="text-secondary-content bg-secondary/60 text-center w-screen p-3">
+    <div className="flex flex-col items-center justify-evenly h-full w-full">
+      <div className="text-secondary-content bg-secondary/60 text-center w-full p-3">
         <h1 className="text-5xl">{title}</h1>
         {subtitle ? <p>{subtitle}</p> : <></>}
       </div>
