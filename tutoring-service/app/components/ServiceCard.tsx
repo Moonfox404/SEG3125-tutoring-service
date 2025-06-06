@@ -9,15 +9,15 @@ type ServiceCardProps = {
 };
 
 const ServiceCard = ({name, description, icon, href}: ServiceCardProps) => {
-  return <div className="card bg-base-100 card-lg w-100 h-70 drop-shadow-lg">
+  return <div className="card bg-base-100 card-sm sm:card-md w-3xs sm:w-xs h-max drop-shadow-lg">
     <div className="card-body">
-      <div className="flex justify-start my-5 text-primary">
+      <div className="flex justify-start my-2 text-primary">
         <FontAwesomeIcon icon={icon} size="xl" />
       </div>
       <h2 className="card-title">{name}</h2>
       <p>{description}</p>
       <div className="card-actions justify-center">
-        <a type="button" href={href} className="btn btn-primary rounded-xl w-80 mx-10">Learn More &#8594;</a>
+        <a type="button" href={href} className="btn btn-primary btn-sm w-9/10 rounded-xl">Learn More &#8594;</a>
       </div>
     </div>
   </div>
