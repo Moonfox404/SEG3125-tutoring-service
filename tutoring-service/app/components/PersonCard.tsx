@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
 
 
-const PLACEHOLDER_PROFILE_IMG = "/file.svg";
+const PLACEHOLDER_PROFILE_IMG = "/user.svg";
 
 
 type DefaultPersonCardProps = PropsWithChildren<{
@@ -19,7 +19,7 @@ type PersonCardProps = Omit<DefaultPersonCardProps, "bookable">;
 
 
 const PersonCard = ({ children, name, role, rating, imgSrc, bookable }: DefaultPersonCardProps) => {
-  return <div className="card card-lg w-100 h-70 bg-base-100 drop-shadow-lg">
+  return <div className="card card-sm sm:card-md w-3xs sm:w-xs h-max bg-base-100 drop-shadow-lg">
     <div className="card-body">
       <div className="flex flex-row justify-between items-center">
         <div className="flex flex-row items-center">
@@ -30,10 +30,10 @@ const PersonCard = ({ children, name, role, rating, imgSrc, bookable }: DefaultP
           </div>
           <div className="ml-5">
             <h2 className="card-title">{name}</h2>
-            <p className="text-neutral-content">{role}</p>
+            <p className="text-muted">{role}</p>
           </div>
         </div>
-        {bookable ? <a className="btn btn-primary btn-square" href={`/book?service=${bookable}`}><FontAwesomeIcon icon={faCalendarCheck} /></a> : <></>}
+        {bookable ? <a className="btn btn-accent btn-square btn-sm" href={`/book?service=${bookable}`}><FontAwesomeIcon icon={faCalendarCheck} /></a> : <></>}
       </div>
       <Rating rating={rating} />
       <div>
