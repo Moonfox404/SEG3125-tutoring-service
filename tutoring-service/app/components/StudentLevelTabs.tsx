@@ -1,22 +1,26 @@
-enum StudentLevel {
-  UNIVERSITY = 0,
-  HIGHSCHOOL,
-}
+"use client";
+
+import { ChangeEvent } from "react";
 
 type StudentLevelTabProps = {
-  onToggle: (level: StudentLevel) => void,
+  onToggle: (level: "uni" | "hs") => void,
   border?: boolean,
 };
 
 const StudentLevelTabs = ({ onToggle, border = false }: StudentLevelTabProps) => {
+  const tabToggled = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      onToggle((event.target.ariaLabel === "University") ? "uni" : "hs");
+    }
+  };
+
   return <div className={`${border ? "border-solid" : ""} card-translucent h-25 flex flex-col justify-evenly`}>
     <p className="text-center">I am in...</p>
     <div role="tablist" className="tabs tabs-border flex justify-center text-primary">
-      <input type="radio" name="student-type" className="tab" aria-label="University" defaultChecked/>
-      <input type="radio" name="student-type" className="tab" aria-label="High School" />
+      <input type="radio" name="student-type" className="tab" aria-label="University" defaultChecked onChange={tabToggled}/>
+      <input type="radio" name="student-type" className="tab" aria-label="High School" onChange={tabToggled}/>
     </div>
   </div>
 };
 
 export default StudentLevelTabs;
-export { StudentLevel };

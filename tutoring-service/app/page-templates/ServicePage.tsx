@@ -1,13 +1,16 @@
+"use client";
+
 import PhotoHeader from "@/app/components/PhotoHeader"
 import StudentLevelTabs from "@/app/components/StudentLevelTabs";
 import Link from "next/link";
+import { JSX, useState } from "react";
 
 type Service = {
   name: string,
   brief: string,
   description: string,
   buttonText: string,
-  buttonLink: string,
+  buttonLink: string
 };
 
 const services: Map<string, Service> = new Map([
@@ -20,7 +23,7 @@ const services: Map<string, Service> = new Map([
       Aliquam rutrum mi lorem, pulvinar fringilla purus interdum vitae. Vivamus viverra vel nisi et mollis. \
     ",
     buttonText: "Available Courses",
-    buttonLink: "/services/tutoring/courses",
+    buttonLink: "tutoring/courses",
   }],
   ["mentorship", {
     name: "Mentorship Workshops",
@@ -31,7 +34,7 @@ const services: Map<string, Service> = new Map([
       Aliquam rutrum mi lorem, pulvinar fringilla purus interdum vitae. Vivamus viverra vel nisi et mollis. \
     ",
     buttonText: "Upcoming Dates",
-    buttonLink: "/services/mentorship/schedule",
+    buttonLink: "mentorship/schedule",
   }],
   ["exam-review", {
     name: "Exam Review Sessions",
@@ -42,7 +45,7 @@ const services: Map<string, Service> = new Map([
       Aliquam rutrum mi lorem, pulvinar fringilla purus interdum vitae. Vivamus viverra vel nisi et mollis. \
     ",
     buttonText: "Available Sessions",
-    buttonLink: "/services/exam-review/schedule",
+    buttonLink: "exam-review/schedule",
   }],
   ["consultation", {
     name: "Academic Consultations",
@@ -51,8 +54,8 @@ const services: Map<string, Service> = new Map([
       Expert guidance to help you craft a standout university application. \
       Get personalized advice for your target programs, including competitive fields like Engineering and Science.\
     ",
-    buttonText: "See All Consulting Services",
-    buttonLink: "services/consulting/all"
+    buttonText: "Book a General Consultation",
+    buttonLink: "consultation/consultants"
   }]
 ]);
 
@@ -64,31 +67,45 @@ const defaultService: Service = {
   buttonLink: "/",
 };
 
-export default async function ServicePage({
-  params,
+const ServicePage = ({
+  service,
+  extraComponents
 }: {
-  params: Promise<{ service: string }>
-}) {
-  const { service } = await params;
+  service: string,
+  extraComponents?: {
+    type: string,
+    card: JSX.Element,
+  }[]
+}) => {
   const serviceInfo = services.get(service) ?? defaultService;
-  const imgSrc = `/${service}-stock.jpg`
+  const imgSrc = `/${service}-stock.jpg`;
+  const hasExtra = Number(extraComponents != undefined);
 
-  return <main className="grid grid-rows-2 md:grid-rows-3">
+  const [level, setLevel] = useState("uni");
+
+  return <main className={`grid grid-rows-${2 + hasExtra} md:grid-rows-${3 + hasExtra}`}>
     <div className="row md:row-span-2">
       <PhotoHeader title={serviceInfo.name} subtitle={serviceInfo.brief} imgSrc={imgSrc}>
         {serviceInfo === defaultService ? <></> :
-          <StudentLevelTabs onToggle={
-            (level) => {
-
-            }
-          } />}
+          <StudentLevelTabs onToggle={(level) => setLevel(level)}/>}
       </PhotoHeader>
     </div>
-    <div className="row md:row-span-1 flex flex-col items-center justify-around mx-10 sm:mx-20 lg:mx-40 my-2">
+    <div className="row md:row-span-1 flex flex-col items-center justify-around mx-10 sm:mx-20 lg:mx-40 my-5">
       <p>
         {serviceInfo.description}
       </p>
-      <Link href={serviceInfo.buttonLink} className="btn btn-accent">{serviceInfo.buttonText}</Link>
+      {hasExtra ? <></> : <Link href={serviceInfo.buttonLink} className="btn btn-accent">{serviceInfo.buttonText}</Link>}
     </div>
+    {hasExtra ?
+      <div className="row md:row-span-1 sm:px-20 lg:px-40 my-10 flex flex-col md:flex-row max-w-screen justify-center items-center flex-wrap">
+        {extraComponents?.map(
+          ({type, card}, index) => {
+            return type === level ? <div key={index}>{card}</div> : <></>;
+          }
+        )}
+      </div> : <></>
+    }
   </main>
-}
+};
+
+export default ServicePage;
