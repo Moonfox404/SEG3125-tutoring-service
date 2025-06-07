@@ -19,28 +19,28 @@ export default function HomePage() {
   // Data for core services cards
   const services = [
     {
-      icon: "book" as IconName,
+      icon: faBook,
       name: "Personalized Tutoring",
       description:
         "Gain valuable skills and insights from expert tutors for all levels.",
       href: "#",
     },
     {
-      icon: "users" as IconName,
+      icon: faUsers,
       name: "Mentorship Workshops",
       description:
         "Gain valuable skills and insight through interactive group sessions.",
       href: "#",
     },
     {
-      icon: "landmark" as IconName,
+      icon: faLandmark,
       name: "Exam Review Sessions",
       description:
         "Ace your exams with targeted review sessions and practice problems.",
       href: "#",
     },
     {
-      icon: "briefcase" as IconName,
+      icon: faBriefcase,
       name: "Academic Consultations",
       description:
         "Seek academic help and guidance from experienced educational advisors.",
@@ -161,7 +161,9 @@ export default function HomePage() {
           </div>
           <div className="flex flex-col gap-5 justify-center items-center md:flex-row p-2 flex-wrap">
             {testimonials.map((testimonial, index) => (
-              <ReviewCard key={index} {...testimonial} />
+              <ReviewCard key={index} {...testimonial}>
+                <p>{testimonial.message}</p>
+              </ReviewCard>
             ))}
           </div>
         </section>
