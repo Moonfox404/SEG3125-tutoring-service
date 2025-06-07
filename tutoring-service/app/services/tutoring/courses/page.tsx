@@ -9,21 +9,27 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 const filterCourses = (courses: Course[], searchKey: string) => {
-  const filterSpecific = (value: number) => {
+  const filterCode = (value: number) => {
     const regex = /[0-9]+/;
     const slice = searchKey.match(regex)?.[0];
     return (slice) ? Number(slice) === value || Number(slice) === 400 + value : false;
+  };
+
+  const filterSpecific = (subject: string, code: number) => {
+    const regex = /[a-zA-Z]{3}[0-9]{4}/;
+    const slice = searchKey.match(regex)?.[0];
+    return (slice) ? (slice.slice(0, 3).toUpperCase() === subject) && (Number(slice.slice(3, 7)) === code || Number(slice.slice(3, 7)) === 400 + code) : true;
   };
 
   return courses.filter((course) => {
     searchKey = searchKey.toLowerCase();
     return (
       !searchKey
-      || (
+      || filterSpecific(course.subject, course.code) && (
         searchKey.includes(course.name.toLowerCase())
         || course.name.toLowerCase().includes(searchKey)
         || searchKey.slice(0, 3).toUpperCase() === course.subject
-        || filterSpecific(course.code)
+        || filterCode(course.code)
       )
     );
   });
