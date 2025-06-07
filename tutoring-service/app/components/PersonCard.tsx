@@ -19,7 +19,7 @@ type PersonCardProps = Omit<DefaultPersonCardProps, "bookable">;
 
 
 const PersonCard = ({ children, name, role, rating, imgSrc, bookable }: DefaultPersonCardProps) => {
-  return <div className="card card-sm sm:card-md w-3xs sm:w-xs h-max bg-base-100 drop-shadow-lg">
+  return <div className="card card-sm sm:card-md w-4xs sm:w-xs h-max bg-base-100 drop-shadow-lg">
     <div className="card-body">
       <div className="flex flex-row justify-between items-center">
         <div className="flex flex-row items-center">
@@ -28,7 +28,7 @@ const PersonCard = ({ children, name, role, rating, imgSrc, bookable }: DefaultP
               <img src={imgSrc ?? PLACEHOLDER_PROFILE_IMG} />
             </div>
           </div>
-          <div className="ml-5">
+          <div className="mx-5">
             <h2 className="card-title">{name}</h2>
             <p className="text-muted">{role}</p>
           </div>
