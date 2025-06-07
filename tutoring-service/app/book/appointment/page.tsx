@@ -1,6 +1,7 @@
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import AppointmentForm from "../../components/AppointmentForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Suspense } from "react";
 
 export default function AppointmentPage() {
   return (
@@ -9,7 +10,9 @@ export default function AppointmentPage() {
         {" "}
         <FontAwesomeIcon icon={faCalendar} size="xl" /> Appointment
       </h1>
-      <AppointmentForm />
+      <Suspense>
+        <AppointmentForm />
+      </Suspense>
     </div>
   );
 }
