@@ -19,6 +19,6 @@ export default function CoursesPage() {
     </div>
     <div className="row row-span-6">
     </div>
-    <div className="row row-span-1 flex justify-center"><Pagination /></div>
+    <div className="row row-span-1 flex justify-center"><Pagination numPages={7}/></div>
   </div>
 }
