@@ -10,12 +10,22 @@ import { useState } from "react";
 
 const filterCourses = (courses: Course[], searchKey: string) => {
   const filterSpecific = (value: number) => {
-    const slice = searchKey.slice(3);
-    return (slice.match("%d")) ? Number(slice) === value || Number(slice) === 500 + value : true;
+    const regex = /[0-9]+/;
+    const slice = searchKey.match(regex)?.[0];
+    return (slice) ? Number(slice) === value || Number(slice) === 400 + value : false;
   };
 
   return courses.filter((course) => {
-    return !searchKey || ((searchKey.includes(course.name) || course.name.includes(searchKey) || searchKey.slice(0, 3) === course.subject) && filterSpecific(course.code))
+    searchKey = searchKey.toLowerCase();
+    return (
+      !searchKey
+      || (
+        searchKey.includes(course.name.toLowerCase())
+        || course.name.toLowerCase().includes(searchKey)
+        || searchKey.slice(0, 3).toUpperCase() === course.subject
+        || filterSpecific(course.code)
+      )
+    );
   });
 };
 
