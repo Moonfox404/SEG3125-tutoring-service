@@ -94,7 +94,7 @@ const ServicePage = ({
       <p>
         {serviceInfo.description}
       </p>
-      {hasExtra ? <></> : <Link href={serviceInfo.buttonLink} className="btn btn-accent">{serviceInfo.buttonText}</Link>}
+      {hasExtra ? null : <Link href={{pathname: serviceInfo.buttonLink, query: {level: level}}} className="btn btn-accent m-5">{serviceInfo.buttonText}</Link>}
     </div>
     {hasExtra ?
       <div className="row md:row-span-1 sm:px-20 lg:px-40 my-10 flex flex-col md:flex-row max-w-screen justify-center items-stretch flex-wrap">

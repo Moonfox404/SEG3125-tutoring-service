@@ -37,12 +37,15 @@ export default async function CoursePage({
   return (
     <main className="grid">
       <div className="row mt-4">
-        <PhotoHeader imgSrc={`/${courseInfo?.subject}.png`} title={course}>
-          <div className="card-translucent md:w-100 lg:w-200">
-            <h2 className="text-2xl text-primary">{courseInfo?.name}</h2>
-            <p>{courseInfo?.description}</p>
+        <PhotoHeader imgSrc={`/${course.charAt(course.length - 1) === "U" ? "hs" : courseInfo?.subject}-stock.jpg`} title={course}>
+          <div className="card-translucent p-2 md:w-100 lg:w-200">
+            <h2 className="text-2xl text-primary m-5">{courseInfo?.name}</h2>
+            <p className="m-5">{courseInfo?.description}</p>
           </div>
         </PhotoHeader>
+      </div>
+      <div className="row flex justify-center items-center">
+        <h1 className="text-2xl text-primary mt-10">Available Tutors</h1>
       </div>
       <div className={`row grid md:grid-cols-2 xl:grid-cols-3 m-10 items-center`}>
         {tutors.map((tutor, index) => {
