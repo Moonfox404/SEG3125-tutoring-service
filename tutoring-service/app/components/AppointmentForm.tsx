@@ -1,19 +1,96 @@
 "use client";
 import { useState } from "react";
 import { DayPicker } from "react-day-picker";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type AppointmentFormProps = {};
 
+const serviceTypes = [
+  "Consultation",
+  "Mentorship",
+  "Review",
+  "Tutor",
+  "General",
+];
+
+const isValidServiceType = (type: string) => {
+  return serviceTypes.includes(type);
+};
+
 const AppointmentForm = ({}: AppointmentFormProps) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const initialServiceType = searchParams.get("serviceType");
+  const initialAgent = searchParams.get("agent");
+  const initialDuration = searchParams.get("duration");
+  const initialCost = searchParams.get("costPerHour");
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   const [date, setDate] = useState<Date | undefined>();
   const [time, setTime] = useState("");
+  const [message, setMessage] = useState("");
+
+  const [serviceType, setServiceType] = useState(
+    isValidServiceType(initialServiceType ?? "")
+      ? initialServiceType
+      : "General"
+  );
+  const [agent, setAgent] = useState(initialAgent || "Any Agent");
+  const [duration, setDuration] = useState(
+    initialDuration ? Number(initialDuration) : 60
+  );
+  const [costPerHour, setCostPerHour] = useState(
+    initialCost ? Number(initialCost) : 20
+  );
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default page reload
+
+    if (!date || !time || !firstName || !lastName || !email) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    // Create a URLSearchParams object to build the query string
+    const params = new URLSearchParams({
+      firstName,
+      lastName,
+      email,
+      date: date.toISOString(),
+      time,
+      type: serviceType!,
+      agent: agent,
+      duration: String(duration),
+      costPerHour: String(costPerHour),
+    });
+
+    // Add optional message if it exists
+    if (message) {
+      params.append("message", message);
+    }
+
+    // Redirect to the confirmation page with the data
+    router.push(`/book/confirmation?${params.toString()}`);
+  };
 
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTime(e.target.value);
   };
   return (
     <div className="w-full max-w-3xl mx-auto px-4 text-black">
-      <form action="" className="flex flex-col gap-5">
+      {serviceType === "General" ? (
+        <div className="text-bold text-base mb-5 text-center ">
+          Note: This is a general appointment booking. Please head to our{" "}
+          <a href="/services" className="text-blue-500 hover:text-blue-600">
+            Services
+          </a>{" "}
+          page to view and select one of the services we offer!
+        </div>
+      ) : null}
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         {/* Name Fields */}
         <div className="flex flex-col md:flex-row gap-5">
           {/* First Name */}
@@ -26,6 +103,8 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
               className="input w-full text-black placeholder:text-stone-300 text-sm md:text-base lg:text-lg"
               placeholder="John"
               required
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
             />
           </fieldset>
 
@@ -39,6 +118,8 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
               className="input w-full text-black placeholder:text-stone-300 text-sm md:text-base lg:text-lg"
               placeholder="Doe"
               required
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
             />
           </fieldset>
         </div>
@@ -70,9 +151,80 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
               placeholder="mail@site.com"
               required
               className="w-full text-sm md:text-base lg:text-lg outline-none"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </label>
         </fieldset>
+
+        <div className="flex flex-col md:flex-row gap-5">
+          {/* Service Type Dropdown */}
+          <fieldset className="w-full">
+            <legend className="text-base md:text-lg lg:text-xl mb-1 font-bold">
+              Service Type
+            </legend>
+            <select
+              className="select w-full text-black text-sm md:text-base lg:text-lg"
+              value={serviceType!}
+              onChange={(e) => setServiceType(e.target.value)}
+              disabled={serviceType === "General" ? true : false}
+            >
+              {serviceTypes.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+          </fieldset>
+
+          {/* Agent (Readonly) */}
+          <fieldset className="w-full">
+            <legend className="text-base md:text-lg lg:text-xl mb-1 font-bold">
+              Agent
+            </legend>
+            <input
+              type="text"
+              className="input w-full text-black placeholder:text-stone-300 text-sm md:text-base lg:text-lg bg-gray-100"
+              value={agent}
+              readOnly
+            />
+          </fieldset>
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-5">
+          {/* Duration (Number Input) */}
+          <fieldset className="w-full">
+            <legend className="text-base md:text-lg lg:text-xl mb-1 font-bold">
+              Duration (minutes)
+            </legend>
+            <input
+              type="number"
+              className="input w-full text-black text-sm md:text-base lg:text-lg"
+              min="60"
+              max="180"
+              step="15"
+              value={duration}
+              onChange={(e) => setDuration(Number(e.target.value))}
+              required
+            />
+          </fieldset>
+
+          {/* Cost Per Hour (Readonly) */}
+          <fieldset className="w-full">
+            <legend className="text-base md:text-lg lg:text-xl mb-1 font-bold">
+              Cost Per Hour
+            </legend>
+            <label className="input w-full flex items-center gap-2 text-black text-sm md:text-base lg:text-lg bg-gray-100">
+              <input
+                type="text"
+                className="w-full bg-transparent outline-none"
+                value={costPerHour}
+                readOnly
+              />
+              <span>CAD</span>
+            </label>
+          </fieldset>
+        </div>
 
         <div className="flex flex-col gap-2">
           <div className="flex gap-10 justify-center max-sm:flex-col max-sm:self-center">
@@ -161,6 +313,8 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
             <textarea
               className="textarea w-[75%] self-center"
               placeholder="Message (optional)"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
             ></textarea>
           </div>
         </fieldset>
