@@ -16,19 +16,16 @@ const Footer = () => {
           <h3 className="font-bold text-lg mb-2 lg:text-xl">Quick Links</h3>
           <ul className="space-y-1 text-sm lg:text-base">
             <li>
-              <a href="#">Home</a>
+              <a href="/">Home</a>
             </li>
             <li>
-              <a href="#">About Us</a>
+              <a href="/about">About Us</a>
             </li>
             <li>
-              <a href="#">Services</a>
+              <a href="/services">Services</a>
             </li>
             <li>
-              <a href="#">FAQs</a>
-            </li>
-            <li>
-              <a href="#">Contact Us</a>
+              <a href="/contact">Contact Us</a>
             </li>
           </ul>
         </div>
