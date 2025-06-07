@@ -3,6 +3,8 @@ import BookConfirmation, {
   BookConfirmationProp,
 } from "../../components/BookConfirmation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { cookies } from "next/headers";
+import Link from "next/link";
 
 type ConfirmationPageProps = {
   searchParams: {
@@ -17,20 +19,36 @@ type ConfirmationPageProps = {
   };
 };
 
-export default function ConfirmationPage({
-  searchParams,
-}: ConfirmationPageProps) {
+export default async function ConfirmationPage() {
+  const cookieStore = cookies();
+  const bookingDataCookie = (await cookieStore).get("bookingData");
+  if (!bookingDataCookie) {
+    return (
+      <div className="min-w-screen min-h-screen flex flex-col gap-5 justify-center items-center text-center">
+        <h1 className="text-red-500 text-2xl font-bold">
+          No Booking Data Found
+        </h1>
+        <p>Please make an appointment first.</p>
+        <Link href="/appointment" className="btn bg-orange-500 text-white">
+          Go to Appointment Page
+        </Link>
+      </div>
+    );
+  }
+
+  const data = JSON.parse(bookingDataCookie.value);
+
   const confirmationProps: BookConfirmationProp = {
-    type: searchParams.type || "Consultation", // Provide a default
-    course: searchParams.course,
-    agent: searchParams.agent || "N/A",
-    date: new Date(searchParams.date), // Convert string back to Date object
-    time: searchParams.time,
-    duration: Number(searchParams.duration), // Convert string to number
-    costPerHour: Number(searchParams.costPerHour), // Convert string to number
-    email: searchParams.email,
+    type: data.serviceType,
+    course: data.course,
+    agent: data.agent,
+    date: new Date(data.date), // Convert string back to Date object
+    time: data.time,
+    duration: Number(data.duration),
+    costPerHour: Number(data.costPerHour),
+    email: data.email,
   };
-  console.log(searchParams);
+
   return (
     <div className="min-w-screen min-h-screen flex flex-col gap-10 justify-center items-center">
       <h1 className="text-primary text-2xl font-bold">
