@@ -4,13 +4,13 @@ type RatingProps = {
 
 
 const Rating = ({ rating }: RatingProps) => {
-  rating = Math.round(2 * rating) / 2;
+  rating = Math.round(rating);
 
-  return <div className="rating rating-half">
-    {[0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5].map((value) => {
+  return <div className="rating">
+    {[1, 2, 3, 4, 5].map((value) => {
       return <div
         key={value}
-        className={`mask mask-star-2 mask-half-${value == Math.round(value) ? 2 : 1} bg-accent`}
+        className={`mask mask-star bg-accent`}
         aria-label={`${value} star`}
         aria-current={rating === value}>
       </div>
