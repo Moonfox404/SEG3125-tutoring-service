@@ -5,10 +5,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
 type PaginationProps = {
-  numPages: number
+  numPages: number;
+  onToggle: (page: number) => void; 
 };
 
-const Pagination = ({ numPages }: PaginationProps) => {
+const Pagination = ({ numPages, onToggle }: PaginationProps) => {
 
   const pages: number[] = Array.from({ length: Math.floor(numPages) }, (_, i) => i + 1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,14 +23,17 @@ const Pagination = ({ numPages }: PaginationProps) => {
       defaultChecked={checked}
       onChange={(event) => {
         if (event.target.checked) {
-          setCurrentPage(Number(event.target.ariaLabel));
+          const page = Number(event.target.ariaLabel)
+          setCurrentPage(page);
+          onToggle(page);
+          console.log(page);
         }
       }} />
   };
 
   return <div role="navigation" className="flex justify-around items-center">
     <button
-      onClick={() => { setCurrentPage(currentPage - 1) }}
+      onClick={() => { setCurrentPage(currentPage - 1); onToggle(currentPage - 1); }}
       disabled={currentPage === 1}
       className="btn btn-ghost"
       >
@@ -43,18 +47,18 @@ const Pagination = ({ numPages }: PaginationProps) => {
         }) :
         // display first and last 2
         <>
-          {currentPage > 1 ? <span className="text-base-content">...</span> : <></>}
-          {currentPage === pages.length ? <PageTab label={pages[currentPage - 3]} /> : <></>}
-          {currentPage > 1 ? <PageTab label={pages[currentPage - 2]} /> : <></>}
+          {currentPage > 1 ? <span className="text-base-content">...</span> : null}
+          {currentPage === pages.length ? <PageTab label={pages[currentPage - 3]} /> : null}
+          {currentPage > 1 ? <PageTab label={pages[currentPage - 2]} /> : null}
           <PageTab label={pages[currentPage - 1]} checked />
-          {currentPage < pages.length ? <PageTab label={pages[currentPage]} /> : <></>}
-          {currentPage === 1 ? <PageTab label={pages[currentPage + 1]} /> : <></>}
-          {currentPage < pages.length ? <span className="text-base-content">...</span> : <></>}
+          {currentPage < pages.length ? <PageTab label={pages[currentPage]} /> : null}
+          {currentPage === 1 ? <PageTab label={pages[currentPage + 1]} /> : null}
+          {currentPage < pages.length ? <span className="text-base-content">...</span> : null}
         </>
       }
     </div>
     <button
-      onClick={() => { setCurrentPage(currentPage + 1) }}
+      onClick={() => { setCurrentPage(currentPage + 1); onToggle(currentPage + 1); }}
       disabled={currentPage === pages.length}
       className="btn btn-ghost"
       >
