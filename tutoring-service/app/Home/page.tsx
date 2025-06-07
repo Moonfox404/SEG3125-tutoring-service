@@ -4,17 +4,15 @@ import {
   faBook,
   faBriefcase,
   faUsers,
-  IconName,
 } from "@fortawesome/free-solid-svg-icons";
 import { faLandmark } from "@fortawesome/free-solid-svg-icons/faLandmark";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { useState } from "react";
 import ServiceCard from "../components/ServiceCard";
 import ReviewCard from "../components/ReviewCard";
 
 export default function HomePage() {
-  const [selectedStudentType, setSelectedStudentType] = useState("University");
+  const [selectedStudentType, setSelectedStudentType] = useState("uni");
 
   // Data for core services cards
   const services = [
@@ -23,28 +21,28 @@ export default function HomePage() {
       name: "Personalized Tutoring",
       description:
         "Gain valuable skills and insights from expert tutors for all levels.",
-      href: "#",
+      href: "/services/tutoring",
     },
     {
       icon: faUsers,
       name: "Mentorship Workshops",
       description:
         "Gain valuable skills and insight through interactive group sessions.",
-      href: "#",
+      href: "/services/mentorship",
     },
     {
       icon: faLandmark,
       name: "Exam Review Sessions",
       description:
         "Ace your exams with targeted review sessions and practice problems.",
-      href: "#",
+      href: "/services/exam-review",
     },
     {
       icon: faBriefcase,
       name: "Academic Consultations",
       description:
         "Seek academic help and guidance from experienced educational advisors.",
-      href: "#",
+      href: "/services/consultation",
     },
   ];
 
@@ -53,14 +51,14 @@ export default function HomePage() {
     {
       rating: 5,
       message:
-        "The personalized lessons for Physics was a game-changer! I felt so much more confident going into my final.",
+        "Reiciendis sint corrupti earum eos odit laudantium aliquam temporibus voluptas harum! Lorem ipsum dolor sit amet consectetur.",
       name: "Jessica L.",
       role: "University Student",
     },
     {
       rating: 5,
       message:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati excepturi qui distinctio quam non, illum autem minima vero similique reiciendis sint corrupti earum eos odit laudantium aliquam temporibus voluptas harum!",
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati excepturi qui distinctio quam non, illum autem minima vero similique.",
       name: "Eric C.",
       role: "University Student",
     },
@@ -92,12 +90,18 @@ export default function HomePage() {
           </h2>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <button className="px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold shadow-md hover:bg-orange-400 transition duration-300 cursor-pointer">
+            <a
+              href="/services"
+              className="px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold shadow-md hover:bg-orange-400 transition duration-300 cursor-pointer"
+            >
               Explore Our Services
-            </button>
-            <button className="px-6 py-3 border border-white text-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition duration-300 cursor-pointer">
+            </a>
+            <a
+              href="/book/appointment"
+              className="px-6 py-3 border border-white text-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition duration-300 cursor-pointer"
+            >
               Book an Appointment
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -108,9 +112,9 @@ export default function HomePage() {
           <p className="text-gray-700 text-lg mb-4">I am in...</p>
           <div className="bg-white p-2 rounded-xl shadow-lg border border-gray-200 flex space-x-2">
             <button
-              onClick={() => setSelectedStudentType("University")}
+              onClick={() => setSelectedStudentType("uni")}
               className={`px-6 py-3 rounded-lg text-lg font-medium transition-colors duration-300 ${
-                selectedStudentType === "University"
+                selectedStudentType === "uni"
                   ? "bg-blue-500 text-white shadow-md"
                   : "text-gray-700 hover:bg-gray-100"
               }`}
@@ -118,9 +122,9 @@ export default function HomePage() {
               University
             </button>
             <button
-              onClick={() => setSelectedStudentType("High School")}
+              onClick={() => setSelectedStudentType("hs")}
               className={`px-6 py-3 rounded-lg text-lg font-medium transition-colors duration-300 ${
-                selectedStudentType === "High School"
+                selectedStudentType === "hs"
                   ? "bg-blue-500 text-white shadow-md"
                   : "text-gray-700 hover:bg-gray-100"
               }`}
@@ -140,9 +144,14 @@ export default function HomePage() {
             stage of your academic journey
           </p>
           <div className="flex flex-col gap-5 justify-center items-center md:flex-row p-2 flex-wrap">
-            {services.map((service, index) => (
-              <ServiceCard key={index} {...service} />
-            ))}
+            {services.map((service, index) => {
+              return !(
+                selectedStudentType === "hs" &&
+                service.name === "Mentorship Workshops"
+              ) ? (
+                <ServiceCard key={index} {...service} />
+              ) : null;
+            })}
           </div>
         </section>
 

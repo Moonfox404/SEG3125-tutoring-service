@@ -1,6 +1,7 @@
-type BookConfirmation = {
-  course: string;
-  tutor: string;
+export type BookConfirmationProp = {
+  type: "Mentorship" | "Tutor" | "Review" | "Consultation";
+  course?: string;
+  agent: string;
   date: Date;
   time: string;
   duration: number; // minutes
@@ -9,16 +10,17 @@ type BookConfirmation = {
 };
 
 const BookConfirmation = ({
+  type,
   course,
-  tutor,
+  agent,
   date,
   time,
   duration,
   costPerHour,
   email,
-}: BookConfirmation) => {
+}: BookConfirmationProp) => {
   return (
-    <div className="p-5 bg-blue-600 rounded-box text-white min-w-[280px] max-w-[60vw] shadow-xl">
+    <div className="p-5 bg-blue-600 rounded-box text-white min-w-[280px] w-fit shadow-xl">
       <h1 className="text-lg md:text-2xl lg:text-3xl text-center mb-10 font-bold">
         Booking Successful
       </h1>
@@ -26,13 +28,20 @@ const BookConfirmation = ({
       <div className="flex flex-col gap-10 sm:text-base md:text-lg">
         <div>
           <div className="flex justify-between">
-            <p>Course:</p>
-            <p>{course}</p>
+            <p>Service Type:</p>
+            <p>{type}</p>
           </div>
 
+          {course ? (
+            <div className="flex justify-between">
+              <p>Course</p>
+              <p>{course}</p>
+            </div>
+          ) : null}
+
           <div className="flex justify-between">
-            <p>Tutor:</p>
-            <p>{tutor}</p>
+            <p>Agent:</p>
+            <p>{agent}</p>
           </div>
         </div>
 
