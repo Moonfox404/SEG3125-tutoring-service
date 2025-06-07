@@ -84,7 +84,7 @@ const ServicePage = ({
   const [level, setLevel] = useState("uni");
 
   return <main className={`grid grid-rows-${2 + hasExtra} md:grid-rows-${3 + hasExtra}`}>
-    <div className="row md:row-span-2">
+    <div className="row md:row-span-2 mt-5">
       <PhotoHeader title={serviceInfo.name} subtitle={serviceInfo.brief} imgSrc={imgSrc}>
         {serviceInfo === defaultService ? <></> :
           <StudentLevelTabs onToggle={(level) => setLevel(level)}/>}
@@ -97,7 +97,7 @@ const ServicePage = ({
       {hasExtra ? <></> : <Link href={serviceInfo.buttonLink} className="btn btn-accent">{serviceInfo.buttonText}</Link>}
     </div>
     {hasExtra ?
-      <div className="row md:row-span-1 sm:px-20 lg:px-40 my-10 flex flex-col md:flex-row max-w-screen justify-center items-center flex-wrap">
+      <div className="row md:row-span-1 sm:px-20 lg:px-40 my-10 flex flex-col md:flex-row max-w-screen justify-center items-stretch flex-wrap">
         {extraComponents?.map(
           ({type, card}, index) => {
             return type === level ? <div key={index}>{card}</div> : <></>;

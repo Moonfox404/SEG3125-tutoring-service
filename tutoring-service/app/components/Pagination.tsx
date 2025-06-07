@@ -27,7 +27,7 @@ const Pagination = ({ numPages }: PaginationProps) => {
       }} />
   };
 
-  return <div role="navigation" className="w-100 flex justify-around items-center">
+  return <div role="navigation" className="flex justify-around items-center">
     <button
       onClick={() => { setCurrentPage(currentPage - 1) }}
       disabled={currentPage === 1}

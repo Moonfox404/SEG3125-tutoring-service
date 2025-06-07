@@ -12,7 +12,7 @@ type ServiceCardProps = {
 };
 
 const ServiceCard = ({ name, description, icon, href, buttonText = "Learn More" }: ServiceCardProps) => {
-  return <div className="card bg-base-100 card-sm sm:card-md w-3xs sm:w-xs h-max drop-shadow-lg m-2">
+  return <div className="card bg-base-100 card-sm sm:card-md w-3xs sm:w-xs h-full drop-shadow-lg m-2">
     <div className="card-body">
       <div className="flex justify-start my-2 text-primary">
         <FontAwesomeIcon icon={icon} size="xl" />
