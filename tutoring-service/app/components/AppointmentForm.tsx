@@ -167,7 +167,7 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
 
         <button
           type="submit"
-          className="btn m-5 bg-orange-400 hover:bg-orange-500 w-[25%] min-w-fit self-center"
+          className="btn m-5 bg-orange-400 hover:bg-orange-500 w-[25%] min-w-fit self-center text-white"
         >
           Submit
         </button>

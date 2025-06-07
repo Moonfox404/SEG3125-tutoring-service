@@ -35,7 +35,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="bg-white w-full">
-          <div className="">
+          <div className="min-h-[64px]">
             <NavBar />
           </div>
           {children}

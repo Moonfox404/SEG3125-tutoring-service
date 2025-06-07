@@ -14,10 +14,10 @@ const NavBar = () => {
   const justToggledRef = useRef(false);
 
   const navLinks = [
-    { href: "#", text: "Home", isActive: true },
-    { href: "#services", text: "Services" },
-    { href: "#contact", text: "Contact" },
-    { href: "#about", text: "About" },
+    { href: "/", text: "Home", isActive: true },
+    { href: "/services", text: "Services" },
+    { href: "/contact", text: "Contact" },
+    { href: "/about", text: "About" },
   ];
 
   const handleToggleMenu = () => {
@@ -69,31 +69,29 @@ const NavBar = () => {
                     <summary className="text-base sm:text-sm md:text-base lg:text-lg">
                       {link.text}
                     </summary>
-                    <ul className="menu dropdown-content bg-white rounded-box z-1 p-2 shadow-sm w-fit">
-                      <li
-                        style={{
-                          "--menu-active-bg": "oklch(62.3% 0.214 259.815)", // override css
-                        }}
-                      >
-                        <a
-                          href={"#"}
-                          className={`px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-500 hover:underline hover:underline-offset-4 hover:decoration-2 transition-colors duration-150`}
+                    <ul className="menu dropdown-content bg-white rounded-box z-1 p-2 shadow-sm">
+                      {[
+                        { type: "Tutoring", href: "/services/tutoring" },
+                        { type: "Mentorship", href: "/services/mentorship" },
+                        { type: "Exam-Review", href: "/services/exam-review" },
+                        {
+                          type: "Consultation",
+                          href: "/services/consultation",
+                        },
+                      ].map((service) => (
+                        <li
+                          style={{
+                            "--menu-active-bg": "oklch(62.3% 0.214 259.815)", // override css
+                          }}
                         >
-                          Item 1
-                        </a>
-                      </li>
-                      <li
-                        style={{
-                          "--menu-active-bg": "oklch(62.3% 0.214 259.815)",
-                        }}
-                      >
-                        <a
-                          href={"#"}
-                          className={`px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-500 hover:underline hover:underline-offset-4 hover:decoration-2 transition-colors duration-150`}
-                        >
-                          Item 2
-                        </a>
-                      </li>
+                          <a
+                            href={service.href}
+                            className={`px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-500 hover:underline hover:underline-offset-4 hover:decoration-2 transition-colors duration-150`}
+                          >
+                            {service.type}
+                          </a>
+                        </li>
+                      ))}
                     </ul>
                   </details>
                 ) : (
@@ -109,9 +107,12 @@ const NavBar = () => {
           <div className="flex items-center">
             {/* Desktop Book Button */}
             <div className="pr-2">
-              <button className="btn btn-warning bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-150">
+              <a
+                href="/services"
+                className="btn btn-warning bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-150"
+              >
                 Book
-              </button>
+              </a>
             </div>
             {/* Mobile Menu Button and Icons */}
             <div className="md:hidden flex items-center space-x-2">
@@ -141,7 +142,6 @@ const NavBar = () => {
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           {navLinks.map((link) => {
-            let servicesLinks = ["Service Link 1", "Service Link 2"];
             if (link.text === "Services") {
               return (
                 <div
@@ -154,17 +154,25 @@ const NavBar = () => {
                   <div className="collapse-title font-semibold">Services</div>
                   <div className="collapse-content text-sm">
                     <ul className="menu dropdown-content bg-gray-50 rounded-box z-1 p-2 shadow-sm w-100 gap-1">
-                      {servicesLinks.map((link) => (
+                      {[
+                        { type: "Tutoring", href: "/services/tutoring" },
+                        { type: "Mentorship", href: "/services/mentorship" },
+                        { type: "Exam-Review", href: "/services/exam-review" },
+                        {
+                          type: "Consultation",
+                          href: "/services/consultation",
+                        },
+                      ].map((service) => (
                         <li
                           style={{ "--menu-active-bg": "#ea580c" }}
                           className="bg-white rounded-xl shadow"
                         >
                           <a
-                            href={"#"}
+                            href={service.href}
                             className={`px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-500 hover:underline hover:underline-offset-4 hover:decoration-2 transition-colors duration-150 `}
                             onClick={() => setIsMobileMenuOpen(false)} // Close menu on link click
                           >
-                            {link}
+                            {service.type}
                           </a>
                         </li>
                       ))}
@@ -190,9 +198,12 @@ const NavBar = () => {
             }
           })}
           <div className="px-3 pt-2 pb-3">
-            <button className="w-full btn btn-warning bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-150">
+            <a
+              href="/services"
+              className="w-full btn btn-warning bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-150"
+            >
               Book
-            </button>
+            </a>
           </div>
         </div>
       </div>
