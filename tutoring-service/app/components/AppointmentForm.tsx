@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { DayPicker } from "react-day-picker";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 type AppointmentFormProps = {};
 
@@ -18,7 +18,6 @@ const isValidServiceType = (type: string) => {
 };
 
 const AppointmentForm = ({}: AppointmentFormProps) => {
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const initialServiceType = searchParams.get("serviceType");
@@ -46,36 +45,6 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
     initialCost ? Number(initialCost) : 20
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent default page reload
-
-    if (!date || !time || !firstName || !lastName || !email) {
-      alert("Please fill in all required fields.");
-      return;
-    }
-
-    // Create a URLSearchParams object to build the query string
-    const params = new URLSearchParams({
-      firstName,
-      lastName,
-      email,
-      date: date.toISOString(),
-      time,
-      type: serviceType!,
-      agent: agent,
-      duration: String(duration),
-      costPerHour: String(costPerHour),
-    });
-
-    // Add optional message if it exists
-    if (message) {
-      params.append("message", message);
-    }
-
-    // Redirect to the confirmation page with the data
-    router.push(`/book/confirmation?${params.toString()}`);
-  };
-
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTime(e.target.value);
   };
@@ -90,7 +59,11 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
           page to view and select one of the services we offer!
         </div>
       ) : null}
-      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+      <form
+        action="/api/confirm-booking"
+        method="POST"
+        className="flex flex-col gap-5"
+      >
         {/* Name Fields */}
         <div className="flex flex-col md:flex-row gap-5">
           {/* First Name */}
@@ -100,6 +73,7 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
             </legend>
             <input
               type="text"
+              name="firstName"
               className="input w-full text-black placeholder:text-stone-300 text-sm md:text-base lg:text-lg"
               placeholder="John"
               required
@@ -115,6 +89,7 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
             </legend>
             <input
               type="text"
+              name="lastName"
               className="input w-full text-black placeholder:text-stone-300 text-sm md:text-base lg:text-lg"
               placeholder="Doe"
               required
@@ -148,6 +123,7 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
             </svg>
             <input
               type="email"
+              name="email"
               placeholder="mail@site.com"
               required
               className="w-full text-sm md:text-base lg:text-lg outline-none"
@@ -165,6 +141,7 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
             </legend>
             <select
               className="select w-full text-black text-sm md:text-base lg:text-lg"
+              name="serviceType"
               value={serviceType!}
               onChange={(e) => setServiceType(e.target.value)}
               disabled={serviceType === "General" ? true : false}
@@ -184,6 +161,7 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
             </legend>
             <input
               type="text"
+              name="agent"
               className="input w-full text-black placeholder:text-stone-300 text-sm md:text-base lg:text-lg bg-gray-100"
               value={agent}
               readOnly
@@ -199,6 +177,7 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
             </legend>
             <input
               type="number"
+              name="duration"
               className="input w-full text-black text-sm md:text-base lg:text-lg"
               min="60"
               max="180"
@@ -217,6 +196,7 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
             <label className="input w-full flex items-center gap-2 text-black text-sm md:text-base lg:text-lg bg-gray-100">
               <input
                 type="text"
+                name="costPerHour"
                 className="w-full bg-transparent outline-none"
                 value={costPerHour}
                 readOnly
@@ -225,6 +205,14 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
             </label>
           </fieldset>
         </div>
+
+        {/* Hidden inputs for date and time for submission */}
+        <input
+          type="hidden"
+          name="date"
+          value={date ? date.toISOString() : ""}
+        />
+        <input type="hidden" name="time" value={time} />
 
         <div className="flex flex-col gap-2">
           <div className="flex gap-10 justify-center max-sm:flex-col max-sm:self-center">
@@ -312,6 +300,7 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
           <div className="flex flex-col w-full">
             <textarea
               className="textarea w-[75%] self-center"
+              name="message"
               placeholder="Message (optional)"
               value={message}
               onChange={(e) => setMessage(e.target.value)}

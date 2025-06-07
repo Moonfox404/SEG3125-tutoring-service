@@ -79,11 +79,7 @@ const NavBar = () => {
                           href: "/services/consultation",
                         },
                       ].map((service) => (
-                        <li
-                          style={{
-                            "--menu-active-bg": "oklch(62.3% 0.214 259.815)", // override css
-                          }}
-                        >
+                        <li>
                           <a
                             href={service.href}
                             className={`px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-500 hover:underline hover:underline-offset-4 hover:decoration-2 transition-colors duration-150`}
@@ -163,10 +159,7 @@ const NavBar = () => {
                           href: "/services/consultation",
                         },
                       ].map((service) => (
-                        <li
-                          style={{ "--menu-active-bg": "#ea580c" }}
-                          className="bg-white rounded-xl shadow"
-                        >
+                        <li className="bg-white rounded-xl shadow">
                           <a
                             href={service.href}
                             className={`px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-500 hover:underline hover:underline-offset-4 hover:decoration-2 transition-colors duration-150 `}

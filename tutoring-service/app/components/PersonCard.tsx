@@ -36,7 +36,7 @@ const PersonCard = ({
                 />
               </div>
             </div>
-            <div className="ml-5">
+            <div className="mx-5">
               <h2 className="card-title">{name}</h2>
               <p className="text-muted">{role}</p>
             </div>

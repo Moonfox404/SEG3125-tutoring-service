@@ -101,11 +101,11 @@ const ServicePage = ({
 
   return (
     <main
-      className={`min-h-[80vh] grid grid-rows-${2 + hasExtra} md:grid-rows-${
+      className={`grid grid-rows-${2 + hasExtra} md:grid-rows-${
         3 + hasExtra
       }`}
     >
-      <div className="row md:row-span-2">
+      <div className="row md:row-span-2 mt-5">
         <PhotoHeader
           title={serviceInfo.name}
           subtitle={serviceInfo.brief}
@@ -121,15 +121,15 @@ const ServicePage = ({
       <div className="row md:row-span-1 flex flex-col items-center justify-around mx-10 sm:mx-20 lg:mx-40 my-5">
         <p>{serviceInfo.description}</p>
         {hasExtra ? (
-          <></>
+          null
         ) : (
-          <Link href={serviceInfo.buttonLink} className="btn btn-accent">
+          <Link href={{pathname: serviceInfo.buttonLink, query: {level: level}}} className="btn btn-accent my-5">
             {serviceInfo.buttonText}
           </Link>
         )}
       </div>
       {hasExtra ? (
-        <div className="row md:row-span-1 sm:px-20 lg:px-40 my-10 flex flex-col md:flex-row max-w-screen justify-center items-center flex-wrap">
+        <div className="row md:row-span-1 sm:px-20 lg:px-40 my-10 flex flex-col md:flex-row max-w-screen justify-center items-stretch flex-wrap">
           {extraComponents?.map(({ type, card }, index) => {
             return type === level ? <div key={index}>{card}</div> : <></>;
           })}
