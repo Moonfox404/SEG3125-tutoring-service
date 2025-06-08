@@ -3,7 +3,8 @@
 import PhotoHeader from "@/app/components/PhotoHeader";
 import StudentLevelTabs from "@/app/components/StudentLevelTabs";
 import Link from "next/link";
-import { JSX, Suspense, useState } from "react";
+import { JSX, useState } from "react";
+import { useStudentLevel } from "../context/StudentLevelContext";
 
 type Service = {
   name: string;
@@ -94,9 +95,9 @@ const ServicePage = ({
   const serviceInfo = services.get(service) ?? defaultService;
   const imgSrc = `/${service}-stock.jpg`;
 
-  const [level, setLevel] = useState("uni");
+  const { studentLevel, setStudentLevel } = useStudentLevel();
   const extraComponentsFiltered = extraComponents?.filter(({ type }) => {
-    return type === level;
+    return type === studentLevel;
   });
   const hasExtra = Number(Boolean(extraComponentsFiltered?.length));
 
@@ -112,20 +113,14 @@ const ServicePage = ({
           subtitle={serviceInfo.brief}
           imgSrc={imgSrc}
         >
-          {serviceInfo === defaultService ? (
-            null
-          ) : (
-            <Suspense>
-              <StudentLevelTabs onToggle={(level) => setLevel(level)} />
-            </Suspense>
-          )}
+          {serviceInfo === defaultService ? null : <StudentLevelTabs />}
         </PhotoHeader>
       </div>
       <div className="row md:row-span-1 flex flex-col items-center justify-around mx-10 sm:mx-20 lg:mx-40 my-5">
-        <p>{serviceInfo.description[level as "uni" | "hs"]}</p>
+        <p>{serviceInfo.description[studentLevel]}</p>
         {hasExtra ? null : (
           <Link
-            href={{ pathname: serviceInfo.buttonLink, query: { level: level } }}
+            href={{ pathname: serviceInfo.buttonLink }}
             className="btn btn-accent my-5"
           >
             {serviceInfo.buttonText}

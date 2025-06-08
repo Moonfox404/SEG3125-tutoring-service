@@ -1,5 +1,5 @@
 "use client";
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import StudentLevelTabs from "../components/StudentLevelTabs";
 import {
   faBook,
@@ -8,9 +8,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faLandmark } from "@fortawesome/free-solid-svg-icons/faLandmark";
 import ServiceCard from "../components/ServiceCard";
+import { useStudentLevel } from "../context/StudentLevelContext";
 
 export default function Services() {
-  const [selectedStudentType, setSelectedStudentType] = useState("uni");
+  const { studentLevel, setStudentLevel } = useStudentLevel();
 
   // Data for core services cards
   const services = [
@@ -19,40 +20,28 @@ export default function Services() {
       name: "Personalized Tutoring",
       description:
         "Gain valuable skills and insights from expert tutors for all levels.",
-      href: {
-        pathname: "/services/tutoring",
-        query: { level: selectedStudentType },
-      },
+      href: "services/tutoring",
     },
     {
       icon: faUsers,
       name: "Mentorship Workshops",
       description:
         "Gain valuable skills and insight through interactive group sessions.",
-      href: {
-        pathname: "/services/mentorship",
-        query: { level: selectedStudentType },
-      },
+      href: "services/mentorship",
     },
     {
       icon: faLandmark,
       name: "Exam Review Sessions",
       description:
         "Ace your exams with targeted review sessions and practice problems.",
-      href: {
-        pathname: "/services/exam-review",
-        query: { level: selectedStudentType },
-      },
+      href: "services/exam-review",
     },
     {
       icon: faBriefcase,
       name: "Academic Consultations",
       description:
         "Seek academic help and guidance from experienced educational advisors.",
-      href: {
-        pathname: "/services/consultation",
-        query: { level: selectedStudentType },
-      },
+      href: "services/consultation",
     },
   ];
 
@@ -68,22 +57,13 @@ export default function Services() {
       </p>
 
       <div>
-        <Suspense>
-          <StudentLevelTabs
-            onToggle={() =>
-              setSelectedStudentType(
-                selectedStudentType === "uni" ? "hs" : "uni"
-              )
-            }
-          />
-        </Suspense>
+        <StudentLevelTabs />
       </div>
 
       <div className="flex flex-col gap-5 justify-center items-center md:flex-row p-2 flex-wrap">
         {services.map((service, index) => {
           return !(
-            selectedStudentType === "hs" &&
-            service.name === "Mentorship Workshops"
+            studentLevel === "hs" && service.name === "Mentorship Workshops"
           ) ? (
             <ServiceCard key={index} {...service} />
           ) : null;

@@ -8,6 +8,7 @@ config.autoAddCss = false;
 
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
+import { StudentLevelProvider } from "./context/StudentLevelContext";
 
 const openSans = Open_Sans({
   variable: "--font-open-sans",
@@ -38,7 +39,7 @@ export default function RootLayout({
           <div className="h-16">
             <NavBar />
           </div>
-          {children}
+          <StudentLevelProvider>{children}</StudentLevelProvider>
           <Footer />
         </div>
       </body>
