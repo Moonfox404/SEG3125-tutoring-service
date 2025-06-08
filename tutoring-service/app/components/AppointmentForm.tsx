@@ -10,7 +10,6 @@ export function getAgentByNameAndType(
   type: string
 ): Person | Consultant | undefined {
   const [fname, lname] = name.trim().split(" ");
-  console.log(fname, lname);
   if (!fname || !lname) return undefined;
 
   if (type === "Tutor") {
@@ -207,6 +206,13 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
                 </option>
               ))}
             </select>
+            {serviceType !== "General" && (
+              <input
+                type="hidden"
+                name="serviceType"
+                value={serviceType ?? ""}
+              />
+            )}
           </fieldset>
 
           {/* Agent (Readonly) */}
@@ -277,7 +283,12 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
               selected={date}
               onSelect={(date) => {
                 setDate(date);
-                setTime("");
+
+                if (serviceType === "Mentorship" && date.getDay() === 5) {
+                  setTime("18:00");
+                } else {
+                  setTime("");
+                }
               }}
               footer={`Selected date: ${
                 date ? date.toLocaleDateString() : "Pick a date"
@@ -290,6 +301,9 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
             />
             <div className="flex flex-col justify-evenly">
               <div>
+                {serviceType === "Mentorship" ? (
+                  <p>Mentorship Group Meetings are on Fridays @ 18:00H </p>
+                ) : null}
                 {availability ? (
                   <p className="text-base text-center">
                     {selectedDayIndex !== null &&
@@ -326,11 +340,18 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
               <input
                 type="time"
                 className="input md:text-sm lg:text-base w-fit min-w-[200px] self-center"
-                value={time}
+                value={
+                  serviceType === "Mentorship" && selectedDayIndex === 5
+                    ? "18:00"
+                    : time
+                }
                 min={minTime}
                 max={maxTime}
                 onChange={handleTimeChange}
-                disabled={(!minTime || !maxTime) && !!availability} // disable if no availability
+                disabled={
+                  ((!minTime || !maxTime) && !!availability) ||
+                  serviceType === "Mentorship"
+                } // disable if no availability
                 required
               />
 
