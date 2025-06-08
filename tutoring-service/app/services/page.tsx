@@ -19,38 +19,50 @@ export default function Services() {
       name: "Personalized Tutoring",
       description:
         "Gain valuable skills and insights from expert tutors for all levels.",
-      href: { pathname: "/services/tutoring", query: { level: selectedStudentType } },
+      href: {
+        pathname: "/services/tutoring",
+        query: { level: selectedStudentType },
+      },
     },
     {
       icon: faUsers,
       name: "Mentorship Workshops",
       description:
         "Gain valuable skills and insight through interactive group sessions.",
-      href: { pathname: "/services/mentorship", query: { level: selectedStudentType } },
+      href: {
+        pathname: "/services/mentorship",
+        query: { level: selectedStudentType },
+      },
     },
     {
       icon: faLandmark,
       name: "Exam Review Sessions",
       description:
         "Ace your exams with targeted review sessions and practice problems.",
-      href: { pathname: "/services/exam-review", query: { level: selectedStudentType } },
+      href: {
+        pathname: "/services/exam-review",
+        query: { level: selectedStudentType },
+      },
     },
     {
       icon: faBriefcase,
       name: "Academic Consultations",
       description:
         "Seek academic help and guidance from experienced educational advisors.",
-      href: { pathname: "/services/consultation", query: { level: selectedStudentType } },
+      href: {
+        pathname: "/services/consultation",
+        query: { level: selectedStudentType },
+      },
     },
   ];
 
   return (
-    <div className="min-w-screen min-h-screen justify-center items-center flex flex-col">
-      <h2 className="text-4xl font-bold text-gray-800 mb-4 text-primary">
+    <div className="w-full min-h-screen px-4 py-8 max-w-7xl mx-auto flex flex-col items-center">
+      <h2 className="text-4xl font-bold text-gray-800 mb-4 text-primary text-center max-md:text-2xl">
         Explore Our Core Services
       </h2>
 
-      <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-12 text-center">
+      <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-12 text-center max-md:text-base">
         We offer a range of services designed to help you succeed at every stage
         of your academic journey
       </p>
@@ -59,7 +71,9 @@ export default function Services() {
         <Suspense>
           <StudentLevelTabs
             onToggle={() =>
-              setSelectedStudentType(selectedStudentType === "uni" ? "hs" : "uni")
+              setSelectedStudentType(
+                selectedStudentType === "uni" ? "hs" : "uni"
+              )
             }
           />
         </Suspense>
