@@ -257,7 +257,7 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
                     </p>
 
                     <p className="text-sm text-blue-600 mt-1">
-                      Duration: 30 minutes
+                      Duration: {duration} minutes
                     </p>
                   </>
                 ) : (
