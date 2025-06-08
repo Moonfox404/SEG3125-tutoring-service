@@ -3,7 +3,7 @@
 import PhotoHeader from "@/app/components/PhotoHeader";
 import StudentLevelTabs from "@/app/components/StudentLevelTabs";
 import Link from "next/link";
-import { JSX, useState } from "react";
+import { JSX, Suspense, useState } from "react";
 
 type Service = {
   name: string;
@@ -113,9 +113,11 @@ const ServicePage = ({
           imgSrc={imgSrc}
         >
           {serviceInfo === defaultService ? (
-            <></>
+            null
           ) : (
-            <StudentLevelTabs onToggle={(level) => setLevel(level)} />
+            <Suspense>
+              <StudentLevelTabs onToggle={(level) => setLevel(level)} />
+            </Suspense>
           )}
         </PhotoHeader>
       </div>
