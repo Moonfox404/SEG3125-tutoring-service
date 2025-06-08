@@ -18,7 +18,7 @@ const services: Map<string, Service> = new Map([
     "tutoring",
     {
       name: "Tutoring",
-      brief: "$18 / hour | One-on-One",
+      brief: "$25 / hour | One-on-One",
       description: {
         uni: "Get individualized support from experienced university peers who understand your program's demands. Whether it's coding, calculus, or critical writing, we tailor each session to your pace and goals.",
         hs: "Our tutors are high-achieving university students who explain concepts clearly and help you prepare for tests with confidence. Sessions are customized to match your curriculum and learning style.",
@@ -44,7 +44,7 @@ const services: Map<string, Service> = new Map([
     "exam-review",
     {
       name: "Exam Review Sessions",
-      brief: "$14 / session | Group Study led by Tutors",
+      brief: "$25 / session | Group Study led by Tutors",
       description: {
         uni: "Maximize your exam performance by reviewing common problem types and strategies with fellow students. Each session is led by a tutor and includes live Q&A and mock questions.",
         hs: "Get a head start on your exams with structured review sessions. Work through key topics, practice questions, and test-taking strategies—all in a supportive group setting.",
@@ -57,7 +57,7 @@ const services: Map<string, Service> = new Map([
     "consultation",
     {
       name: "Academic Consultations",
-      brief: "$18 / hour",
+      brief: "$25 / hour",
       description: {
         uni: "Not sure what course to take next? Struggling to balance school and life? Our experienced student advisors offer one-on-one sessions to help you make informed academic decisions.",
         hs: "Book a session with our academic consultants to discuss program options, study techniques, or ways to boost your grades. We'll help you prepare for university success.",

@@ -24,6 +24,7 @@ const examReviewCards: { type: string; card: JSX.Element }[] = [
             date: "June 20, 2025",
             time: "4:00 PM – 6:00 PM",
             location: "CYB 105, University of Ottawa",
+            costPerHour: 25,
           },
         }}
         buttonText="Reserve a Seat"
@@ -47,6 +48,7 @@ const examReviewCards: { type: string; card: JSX.Element }[] = [
             date: "June 24, 2025",
             time: "4:00 PM – 6:00 PM",
             location: "CRX 202, University of Ottawa",
+            costPerHour: 25,
           },
         }}
         buttonText="Reserve a Seat"
@@ -71,6 +73,7 @@ const examReviewCards: { type: string; card: JSX.Element }[] = [
             date: "June 26, 2025",
             time: "4:00 PM – 6:00 PM",
             location: "SITE 4004, University of Ottawa",
+            costPerHour: 25,
           },
         }}
         buttonText="Reserve a Seat"
@@ -94,6 +97,7 @@ const examReviewCards: { type: string; card: JSX.Element }[] = [
             date: "June 21, 2025",
             time: "4:00 PM – 6:00 PM",
             location: "CRX 101, University of Ottawa",
+            costPerHour: 25,
           },
         }}
         buttonText="Reserve a Seat"
@@ -117,6 +121,7 @@ const examReviewCards: { type: string; card: JSX.Element }[] = [
             date: "June 20, 2025",
             time: "4:00 PM – 6:00 PM",
             location: "STM 1002, University of Ottawa",
+            costPerHour: 25,
           },
         }}
         buttonText="Reserve a Seat"
