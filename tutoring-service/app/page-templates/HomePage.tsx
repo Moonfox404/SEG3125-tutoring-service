@@ -21,28 +21,28 @@ export default function HomePage() {
       name: "Personalized Tutoring",
       description:
         "Gain valuable skills and insights from expert tutors for all levels.",
-      href: "/services/tutoring",
+      href: { pathname: "/services/tutoring", query: { level: selectedStudentType } },
     },
     {
       icon: faUsers,
       name: "Mentorship Workshops",
       description:
         "Gain valuable skills and insight through interactive group sessions.",
-      href: "/services/mentorship",
+      href: { pathname: "/services/mentorship", query: { level: selectedStudentType } },
     },
     {
       icon: faLandmark,
       name: "Exam Review Sessions",
       description:
         "Ace your exams with targeted review sessions and practice problems.",
-      href: "/services/exam-review",
+      href: { pathname: "/services/exam-review", query: { level: selectedStudentType } },
     },
     {
       icon: faBriefcase,
       name: "Academic Consultations",
       description:
         "Seek academic help and guidance from experienced educational advisors.",
-      href: "/services/consultation",
+      href: { pathname: "/services/consultation", query: { level: selectedStudentType } },
     },
   ];
 

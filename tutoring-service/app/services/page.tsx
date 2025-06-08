@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import StudentLevelTabs from "../components/StudentLevelTabs";
 import {
   faBook,
@@ -10,6 +10,8 @@ import { faLandmark } from "@fortawesome/free-solid-svg-icons/faLandmark";
 import ServiceCard from "../components/ServiceCard";
 
 export default function Services() {
+  const [selectedStudentType, setSelectedStudentType] = useState("uni");
+
   // Data for core services cards
   const services = [
     {
@@ -17,31 +19,31 @@ export default function Services() {
       name: "Personalized Tutoring",
       description:
         "Gain valuable skills and insights from expert tutors for all levels.",
-      href: "services/tutoring",
+      href: { pathname: "/services/tutoring", query: { level: selectedStudentType } },
     },
     {
       icon: faUsers,
       name: "Mentorship Workshops",
       description:
         "Gain valuable skills and insight through interactive group sessions.",
-      href: "services/mentorship",
+      href: { pathname: "/services/mentorship", query: { level: selectedStudentType } },
     },
     {
       icon: faLandmark,
       name: "Exam Review Sessions",
       description:
         "Ace your exams with targeted review sessions and practice problems.",
-      href: "services/exam-review",
+      href: { pathname: "/services/exam-review", query: { level: selectedStudentType } },
     },
     {
       icon: faBriefcase,
       name: "Academic Consultations",
       description:
         "Seek academic help and guidance from experienced educational advisors.",
-      href: "services/consultation",
+      href: { pathname: "/services/consultation", query: { level: selectedStudentType } },
     },
   ];
-  const [selectedStudentType, setSelectedStudentType] = useState("uni");
+
   return (
     <div className="min-w-screen min-h-screen justify-center items-center flex flex-col">
       <h2 className="text-4xl font-bold text-gray-800 mb-4 text-primary">
@@ -54,11 +56,13 @@ export default function Services() {
       </p>
 
       <div>
-        <StudentLevelTabs
-          onToggle={() =>
-            setSelectedStudentType(selectedStudentType === "uni" ? "hs" : "uni")
-          }
-        />
+        <Suspense>
+          <StudentLevelTabs
+            onToggle={() =>
+              setSelectedStudentType(selectedStudentType === "uni" ? "hs" : "uni")
+            }
+          />
+        </Suspense>
       </div>
 
       <div className="flex flex-col gap-5 justify-center items-center md:flex-row p-2 flex-wrap">
