@@ -2,6 +2,40 @@
 import { useState } from "react";
 import { DayPicker } from "react-day-picker";
 import { useSearchParams } from "next/navigation";
+import { MockPeople, Person } from "../mock-data/MockPeople";
+import { Consultant, MockConsultants } from "../mock-data/MockConsultants";
+
+export function getAgentByNameAndType(
+  name: string,
+  type: string
+): Person | Consultant | undefined {
+  const [fname, lname] = name.trim().split(" ");
+  console.log(fname, lname);
+  if (!fname || !lname) return undefined;
+
+  if (type === "Tutor") {
+    return MockPeople.find(
+      (person) => person.fname === fname && person.lname === lname
+    );
+  } else if (type === "Consultation") {
+    return MockConsultants.find(
+      (consultant) => consultant.fname === fname && consultant.lname === lname
+    );
+  }
+  return undefined;
+}
+
+export function getAgentAvailabilityByDay(
+  agent: Person | Consultant,
+  day: number
+): { start?: Date; end?: Date } | undefined {
+  if (!agent || !Array.isArray(agent.availability)) return undefined;
+  return agent.availability[day];
+}
+
+function formatTime(date: Date) {
+  return date.toTimeString().slice(0, 5); // "HH:MM"
+}
 
 type AppointmentFormProps = {};
 
@@ -42,8 +76,29 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
     initialDuration ? Number(initialDuration) : 60
   );
   const [costPerHour, setCostPerHour] = useState(
-    initialCost ? Number(initialCost) : 20
+    initialCost ? Number(initialCost) : 25
   );
+
+  const agentInfo =
+    agent !== "Any Agent" && serviceType
+      ? getAgentByNameAndType(agent, serviceType)
+      : undefined;
+
+  const availability = agentInfo?.availability;
+
+  const selectedDayIndex = date?.getDay(); // 0-6
+  let minTime = "";
+  let maxTime = "";
+
+  if (typeof selectedDayIndex === "number" && availability) {
+    const dayAvailability = availability[selectedDayIndex];
+    if (dayAvailability?.start && dayAvailability?.end) {
+      const localStart = new Date(dayAvailability.start);
+      const localEnd = new Date(dayAvailability.end);
+      minTime = formatTime(localStart);
+      maxTime = formatTime(localEnd);
+    }
+  }
 
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTime(e.target.value);
@@ -144,7 +199,7 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
               name="serviceType"
               value={serviceType!}
               onChange={(e) => setServiceType(e.target.value)}
-              disabled={serviceType === "General" ? true : false}
+              disabled={serviceType === "General" ? false : true}
             >
               {serviceTypes.map((type) => (
                 <option key={type} value={type}>
@@ -179,7 +234,7 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
               type="number"
               name="duration"
               className="input w-full text-black text-sm md:text-base lg:text-lg"
-              min="60"
+              min="30"
               max="180"
               step="15"
               value={duration}
@@ -217,53 +272,102 @@ const AppointmentForm = ({}: AppointmentFormProps) => {
         <div className="flex flex-col gap-2">
           <div className="flex gap-10 justify-center max-sm:flex-col max-sm:self-center">
             <DayPicker
-              className="react-day-picker w-fit md:text-base lg:text-lg "
+              className="react-day-picker w-fit md:text-base lg:text-lg self-center"
               mode="single"
               selected={date}
-              onSelect={setDate}
+              onSelect={(date) => {
+                setDate(date);
+                setTime("");
+              }}
               footer={`Selected date: ${
                 date ? date.toLocaleDateString() : "Pick a date"
               }`}
               showOutsideDays
               captionLayout="dropdown"
               fixedWeeks
+              disabled={{ before: new Date() }} // ⛔ disables all past dates
+              required
             />
             <div className="flex flex-col justify-evenly">
+              <div>
+                {availability ? (
+                  <p className="text-base text-center">
+                    {selectedDayIndex !== null &&
+                    selectedDayIndex !== undefined ? (
+                      availability[selectedDayIndex]?.start &&
+                      availability[selectedDayIndex]?.end ? (
+                        <>
+                          {`${agent} is available for an appointment during these times:`}
+                          <br />
+                          {`Starting time - ${availability[
+                            selectedDayIndex
+                          ].start.toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}`}
+                          <br />
+                          {`Ending time - ${availability[
+                            selectedDayIndex
+                          ].end.toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}`}
+                        </>
+                      ) : (
+                        `${agent} is not available on the selected day.`
+                      )
+                    ) : (
+                      `Please select a date to see ${agent}'s availability.`
+                    )}
+                  </p>
+                ) : null}
+              </div>
+
               <input
                 type="time"
-                className="input md:text-sm lg:text-base w-full"
+                className="input md:text-sm lg:text-base w-fit min-w-[200px] self-center"
                 value={time}
+                min={minTime}
+                max={maxTime}
                 onChange={handleTimeChange}
+                disabled={(!minTime || !maxTime) && !!availability} // disable if no availability
+                required
               />
 
-              <div className="sm:block hidden p-4 bg-blue-50 border border-blue-200 rounded-lg text-center text-blue-800 font-semibold text-lg shadow-sm">
-                {date && time ? (
-                  <>
-                    <p>Confirm Date & Time</p>
-                    <p className="text-blue-500">
-                      {new Date(
-                        `${date?.toDateString()} ${time}`
-                      ).toLocaleString("en-US", {
-                        weekday: "short",
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                        hour: "numeric",
-                        minute: "2-digit",
-                        hour12: true,
-                        timeZoneName: "long",
-                        timeZone: "America/Toronto",
-                      })}
-                    </p>
+              {(!minTime || !maxTime) && !!availability && selectedDayIndex ? (
+                <div className="sm:block hidden p-4 bg-red-50 border border-red-200 rounded-lg text-center text-red-800 font-semibold text-lg shadow-sm">
+                  No availability on this day.
+                </div>
+              ) : (
+                <div className="sm:block hidden p-4 bg-blue-50 border border-blue-200 rounded-lg text-center text-blue-800 font-semibold text-lg shadow-sm">
+                  {date && time ? (
+                    <>
+                      <p>Confirm Date & Time</p>
+                      <p className="text-blue-500">
+                        {new Date(
+                          `${date?.toDateString()} ${time}`
+                        ).toLocaleString("en-US", {
+                          weekday: "short",
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                          hour: "numeric",
+                          minute: "2-digit",
+                          hour12: true,
+                          timeZoneName: "long",
+                          timeZone: "America/Toronto",
+                        })}
+                      </p>
 
-                    <p className="text-sm text-blue-600 mt-1">
-                      Duration: {duration} minutes
-                    </p>
-                  </>
-                ) : (
-                  <p>Please Select a Date and Time</p>
-                )}
-              </div>
+                      <p className="text-sm text-blue-600 mt-1">
+                        Duration: {duration} minutes
+                      </p>
+                    </>
+                  ) : (
+                    <p>Please Select a Date and Time</p>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
