@@ -1,31 +1,51 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import { ChangeEvent } from "react";
+import { useStudentLevel } from "../context/StudentLevelContext";
 
-type StudentLevelTabProps = {
-  onToggle: (level: "uni" | "hs") => void,
-  border?: boolean,
+type StudentLevelTabsProps = {
+  border?: boolean;
 };
 
-const StudentLevelTabs = ({ onToggle, border = false }: StudentLevelTabProps) => {
+const StudentLevelTabs = ({ border = false }: StudentLevelTabsProps) => {
+  const { studentLevel, setStudentLevel } = useStudentLevel();
+
   const tabToggled = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      onToggle((event.target.ariaLabel === "University") ? "uni" : "hs");
+      setStudentLevel(event.target.ariaLabel === "University" ? "uni" : "hs");
     }
   };
 
-  const params = useSearchParams();
-  const defaultLevel = params.get('level') ?? 'uni';
-  onToggle(defaultLevel as 'uni' | 'hs');
-
-  return <div className={`${border ? "border-solid" : ""} card-translucent h-25 flex flex-col justify-evenly`}>
-    <p className="text-center">I am in...</p>
-    <div role="tablist" className="tabs tabs-border flex justify-center text-primary">
-      <input type="radio" name="student-type" className="tab" aria-label="University" defaultChecked={defaultLevel === 'uni'} onChange={tabToggled}/>
-      <input type="radio" name="student-type" className="tab" aria-label="High School" defaultChecked={defaultLevel === 'hs'} onChange={tabToggled}/>
+  return (
+    <div
+      className={`${
+        border ? "border-solid" : ""
+      } card-translucent h-25 flex flex-col justify-evenly`}
+    >
+      <p className="text-center">I am in...</p>
+      <div
+        role="tablist"
+        className="tabs tabs-border flex justify-center text-primary"
+      >
+        <input
+          type="radio"
+          name="student-type"
+          className="tab"
+          aria-label="University"
+          checked={studentLevel === "uni"}
+          onChange={tabToggled}
+        />
+        <input
+          type="radio"
+          name="student-type"
+          className="tab"
+          aria-label="High School"
+          checked={studentLevel === "hs"}
+          onChange={tabToggled}
+        />
+      </div>
     </div>
-  </div>
+  );
 };
 
 export default StudentLevelTabs;
