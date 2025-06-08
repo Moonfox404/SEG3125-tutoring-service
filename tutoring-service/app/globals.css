@@ -10,6 +10,7 @@
   --color-accent: #ff9900;
   --color-primary-content: #ffffff;
   --color-secondary-content: #ffffff;
+  --color-accent-content: #000000;
 }
 
 :root {
@@ -20,7 +21,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-open-sans);
   --font-mono: var(--font-geist-mono);
 }
 

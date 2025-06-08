@@ -29,7 +29,7 @@ export default async function ConfirmationPage() {
           No Booking Data Found
         </h1>
         <p>Please make an appointment first.</p>
-        <Link href="/appointment" className="btn bg-orange-500 text-white">
+        <Link href="/book/appointment" className="btn bg-orange-500 text-white">
           Go to Appointment Page
         </Link>
       </div>

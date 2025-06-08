@@ -10,7 +10,7 @@ type DefaultPersonCardProps = PropsWithChildren<{
   role: string;
   rating: number;
   imgSrc?: string;
-  bookable?: "tutor" | "mentor" | "review" | "consult";
+  bookable?: "Tutor" | "Mentorship" | "Review" | "Consultation" | "General";
 }>;
 
 type PersonCardProps = Omit<DefaultPersonCardProps, "bookable">;
@@ -44,7 +44,7 @@ const PersonCard = ({
           {bookable ? (
             <a
               className="btn btn-accent btn-square btn-sm"
-              href={`/book?service=${bookable}`}
+              href={`/book/appointment?serviceType=${bookable}&agent=${name}`}
             >
               <FontAwesomeIcon icon={faCalendarCheck} />
             </a>

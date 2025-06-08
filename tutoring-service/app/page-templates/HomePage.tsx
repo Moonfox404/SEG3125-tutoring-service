@@ -21,46 +21,52 @@ export default function HomePage() {
       name: "Personalized Tutoring",
       description:
         "Gain valuable skills and insights from expert tutors for all levels.",
-      href: "/services/tutoring",
+      href: { pathname: "/services/tutoring", query: { level: selectedStudentType } },
     },
     {
       icon: faUsers,
       name: "Mentorship Workshops",
       description:
         "Gain valuable skills and insight through interactive group sessions.",
-      href: "/services/mentorship",
+      href: { pathname: "/services/mentorship", query: { level: selectedStudentType } },
     },
     {
       icon: faLandmark,
       name: "Exam Review Sessions",
       description:
         "Ace your exams with targeted review sessions and practice problems.",
-      href: "/services/exam-review",
+      href: { pathname: "/services/exam-review", query: { level: selectedStudentType } },
     },
     {
       icon: faBriefcase,
       name: "Academic Consultations",
       description:
         "Seek academic help and guidance from experienced educational advisors.",
-      href: "/services/consultation",
+      href: { pathname: "/services/consultation", query: { level: selectedStudentType } },
     },
   ];
 
-  // Data for testimonial cards
   const testimonials = [
     {
       rating: 5,
       message:
-        "Reiciendis sint corrupti earum eos odit laudantium aliquam temporibus voluptas harum! Lorem ipsum dolor sit amet consectetur.",
+        "The review sessions were incredibly helpful. The tutors explained everything clearly and made hard topics much easier to understand.",
       name: "Jessica L.",
       role: "University Student",
     },
     {
       rating: 5,
       message:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati excepturi qui distinctio quam non, illum autem minima vero similique.",
+        "Booking a session was easy, and the consultant helped me plan my university applications step by step. Highly recommend!",
       name: "Eric C.",
       role: "University Student",
+    },
+    {
+      rating: 5,
+      message:
+        "I wasn’t sure which program to apply to, but my advisor helped me compare schools and prep for interviews. It made the whole process less stressful.",
+      name: "Daniel K.",
+      role: "Grade 12 Student",
     },
   ];
 
@@ -165,7 +171,9 @@ export default function HomePage() {
           </p>
           <div className="bg-white rounded-xl shadow-lg p-8 mx-auto max-w-4xl border border-gray-200 mb-12">
             <p className="text-2xl italic text-gray-700 leading-relaxed">
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+              "The tutoring and consultation sessions gave me the clarity and
+              confidence I needed. I wouldn’t have passed without them!" <br />—
+              Sarah L., Computer Science Student
             </p>
           </div>
           <div className="flex flex-col gap-5 justify-center items-center md:flex-row p-2 flex-wrap">
