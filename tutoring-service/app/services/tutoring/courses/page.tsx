@@ -2,11 +2,11 @@
 
 import Pagination from "@/app/components/Pagination";
 import SearchBar from "@/app/components/SearchBar";
+import { useStudentLevel } from "@/app/context/StudentLevelContext";
 import { Course, mockHSCourses, mockUniCourses } from "@/app/mock-data/MockCourses";
 import { faBookBookmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 
 const filterCourses = (courses: Course[], searchKey: string) => {
@@ -37,9 +37,8 @@ const filterCourses = (courses: Course[], searchKey: string) => {
 };
 
 const CourseList = ({ searchKey }: { searchKey: string }) => {
-  const params = useSearchParams();
-  const level = params.get("level");
-  const courses = (level === "hs") ? mockHSCourses : mockUniCourses;
+  const { studentLevel } = useStudentLevel();
+  const courses = (studentLevel === "hs") ? mockHSCourses : mockUniCourses;
 
   const [currentPage, setCurrentPage] = useState(1);
   const filteredCourses = filterCourses(courses, searchKey);
@@ -49,7 +48,7 @@ const CourseList = ({ searchKey }: { searchKey: string }) => {
       {filteredCourses.slice((currentPage - 1) * 6, currentPage * 6).map(
         (course, index) => {
           return <div key={index} className="row my-2 mx-10 flex items-center justify-center">
-            <Link className="btn btn-primary size-full text-center rounded-lg" href={`courses/${course.subject}${course.code}${level === 'hs' ? 'U' : ''}`}>{course.name}</Link>
+            <Link className="btn btn-primary size-full text-center rounded-lg" href={`courses/${course.subject}${course.code}${studentLevel === 'hs' ? 'U' : ''}`}>{course.name}</Link>
           </div>
         }
       )}

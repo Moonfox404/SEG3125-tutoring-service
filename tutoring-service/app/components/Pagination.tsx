@@ -5,7 +5,7 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type PaginationProps = {
   numPages: number;
@@ -13,6 +13,17 @@ type PaginationProps = {
 };
 
 const Pagination = ({ numPages, onToggle }: PaginationProps) => {
+  const [maxPageDisplay, setMaxPageDisplay] = useState(3);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 350px)");
+
+    setMaxPageDisplay(mediaQuery.matches ? 1 : 3);
+
+    // add event listener for if preference changes
+    mediaQuery.addEventListener("change", (event) => setMaxPageDisplay(event.matches ? 1 : 3));
+  }, []);
+
   const pages: number[] = Array.from(
     { length: Math.floor(numPages) },
     (_, i) => i + 1
@@ -57,7 +68,7 @@ const Pagination = ({ numPages, onToggle }: PaginationProps) => {
         <FontAwesomeIcon icon={faChevronLeft} />
       </button>
       <div className="tabs tabs-border text-accent flex items-center">
-        {pages.length <= 5 ? (
+        {pages.length <= (maxPageDisplay + 2) ? (
           pages.map(
             // display all page numbers if less than or equal to 5
             (pageNum) => {
@@ -72,17 +83,17 @@ const Pagination = ({ numPages, onToggle }: PaginationProps) => {
             {currentPage > 1 ? (
               <span className="text-base-content">...</span>
             ) : null}
-            {currentPage === pages.length ? (
+            {currentPage === pages.length && maxPageDisplay > 1 ? (
               <PageTab label={pages[currentPage - 3]} />
             ) : null}
-            {currentPage > 1 ? (
+            {currentPage > 1 && maxPageDisplay > 1 ? (
               <PageTab label={pages[currentPage - 2]} />
             ) : null}
             <PageTab label={pages[currentPage - 1]} checked />
-            {currentPage < pages.length ? (
+            {currentPage < pages.length && maxPageDisplay > 1 ? (
               <PageTab label={pages[currentPage]} />
             ) : null}
-            {currentPage === 1 ? (
+            {currentPage === 1 && maxPageDisplay > 1 ? (
               <PageTab label={pages[currentPage + 1]} />
             ) : null}
             {currentPage < pages.length ? (
