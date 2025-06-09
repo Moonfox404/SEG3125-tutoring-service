@@ -17,7 +17,7 @@ const hsServices: Service[] = [
   },
   {
     name: "University Application Consulting",
-    short: "UA",
+    short: "UAC",
     description:
       "Get help writing your University application or preparing for an interview.",
   },
